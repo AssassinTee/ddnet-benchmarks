@@ -2,6 +2,19 @@
 
 small repository creating and maintaining ddnet benchmarks
 
+## Method
+
+Goal is to download and benchmark a selection of demos for a selection of clients and graph some nice metrics.
+In order to prevent other factors we benchmark demos of online gameplay and not online gameplay in order to prevent lag, random text rendering and other influences.
+All benchmarks are done in a 30 second demo clip from the beginning
+
+## Selected maps
+
+The map selection is not random. It contains known graphically heavy maps with
+- lots of quads like `Mud`, `run_world_war_zero`, `Victory 2`
+- lots of quadart like `Abyss`, `KingsLeap`
+- lots of popularity like `Linear`
+
 ## Create benchmarks
 
 - Select and download the clients you want to benchmark, this can be done automatically
