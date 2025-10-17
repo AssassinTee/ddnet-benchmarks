@@ -29,7 +29,7 @@ def main():
         else:
             print(f"creating {benchmark_name}")
             with open(benchmark_directory, "w") as f:
-                f.write("toggle_local_console\n")
+                # f.write("toggle_local_console\n")
                 f.write("demo_play\n")
                 f.write(f"benchmark_quit 30 benchmark-{map_name}.txt\n")
 
