@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-mkdir clients
-mkdir results
+mkdir -p clients
+mkdir -p results
 
 echo "#### Installing clients ####"
 python scripts/install-clients.py client-list.json
