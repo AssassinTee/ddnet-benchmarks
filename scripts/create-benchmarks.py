@@ -5,7 +5,6 @@ from pathlib import Path
 DEMOS_DIR = "resources/demos"
 CLIENTS_DIR = "clients"
 BENCHMARKS_DIR = "benchmarks"  # Directory to store benchmark outputs
-DDNET_EXECUTABLE = "DDNet.exe"  # Path to DDNet executable
 
 
 def extract_map_name(demo_filename: Path) -> str:
@@ -19,7 +18,7 @@ def benchmark_exists(client: Path, demo_filename: Path) -> bool:
     return benchmark_path.exists()
 
 
-def run_benchmark(client: Path, demo_file: Path):
+def run_benchmark(client: Path, demo_file: Path, windows: bool):
     if benchmark_exists(client, demo_file):
         print(f"[SKIP] Benchmark already exists for {client} - {demo_file.name}")
         return
@@ -27,7 +26,8 @@ def run_benchmark(client: Path, demo_file: Path):
     map_name = extract_map_name(demo_file)
 
     # Build command
-    command = f'{DDNET_EXECUTABLE} "play demos/{demo_file.name}; exec benchmark-{map_name}.cfg"'
+    executable = "DDNet.exe" if windows else "./DDNet"
+    command = f'{executable} "play demos/{demo_file.name}; exec benchmark-{map_name}.cfg"'
     print(f"[RUN] {command} for client {client}")
 
     # Run DDNet.exe with client's config/environment
@@ -49,6 +49,10 @@ def run_benchmark(client: Path, demo_file: Path):
 def main():
     demos = [f for f in Path(DEMOS_DIR).glob("*.demo")]
     clients = [d for d in Path(CLIENTS_DIR).glob("ddnet-*/DDNet-*/DDNet.exe")]
+    windows = True
+    if not clients:  # linux fallback
+        windows = False
+        clients = [d for d in Path(CLIENTS_DIR).glob("ddnet-*/DDNet-*/DDNet")]
 
     if not demos:
         print("No demos found in resources/demos/")
@@ -60,7 +64,7 @@ def main():
     for client in clients:
         print(f"\n=== Processing Client: {client} ===")
         for demo in demos:
-            run_benchmark(Path(client), Path(demo))
+            run_benchmark(Path(client), Path(demo), windows)
 
 
 if __name__ == "__main__":

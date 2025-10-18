@@ -68,6 +68,7 @@ class StorageFinder(StorageFinderBase):
             "/opt/teeworlds/data",
             # os.path.expanduser('~/.steam/steam/steamapps/common/DDraceNetwork/ddnet/data'),
             # os.path.expanduser('~/.local/share/Steam/steamapps/common/Teeworlds/tw/data'),
+            os.path.expanduser('~/.local/share/ddnet'),
         ]
         if sys.platform == 'linux':
             self._findLocations(linux_paths, sys.platform)

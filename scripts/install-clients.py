@@ -11,7 +11,7 @@ import platform
 
 def get_os_suffix() -> str:
     if platform.system() == 'Linux':
-        return 'linux-x86_64.tar.gz'
+        return 'linux_x86_64.tar.xz'
     elif platform.system() == 'Windows':
         return 'win64.zip'
     else:
