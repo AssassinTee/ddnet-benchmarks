@@ -27,7 +27,9 @@ def run_benchmark(client: Path, demo_file: Path, windows: bool):
 
     # Build command
     executable = "DDNet.exe" if windows else "./DDNet"
-    command = f'{executable} "play demos/{demo_file.name}; exec benchmark-{map_name}.cfg"'
+    command = (
+        f'{executable} "play demos/{demo_file.name}; exec benchmark-{map_name}.cfg"'
+    )
     print(f"[RUN] {command} for client {client}")
 
     # Run DDNet.exe with client's config/environment
@@ -37,13 +39,14 @@ def run_benchmark(client: Path, demo_file: Path, windows: bool):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
-        cwd=client.parent)
+        cwd=client.parent,
+    )
 
     # Save output to log
-    for line in result.stdout.split('\n'):
+    for line in result.stdout.split("\n"):
         print(line)
 
-    print(f"[DONE] Benchmark created")
+    print("[DONE] Benchmark created")
 
 
 def main():
@@ -60,6 +63,14 @@ def main():
     if not clients:
         print("No clients found in clients/")
         return
+
+    def sort_key(p) -> str:
+        name = p.parent.name
+        parts = name.split("-")
+        assert len(parts) == 3
+        return parts[1].split(".")
+
+    clients = sorted(clients, key=lambda p: sort_key(p))
 
     for client in clients:
         print(f"\n=== Processing Client: {client} ===")
