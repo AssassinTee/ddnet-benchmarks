@@ -18,11 +18,15 @@ def read_frametimes(filename):
 def check_result(result: Path):
     frametimes = read_frametimes(result)
     combined_frametimes = np.sum(frametimes)
-    combined_frametime_seconds = combined_frametimes / 10 ** 6
+    combined_frametime_seconds = combined_frametimes / 10**6
     print(combined_frametime_seconds)
     if combined_frametime_seconds < 28:
-        print(f"invalid frametimes: {result} has only {combined_frametime_seconds} seconds")
-        print("Please delete this benchmark out of the client and result directory and redo it")
+        print(
+            f"invalid frametimes: {result} has only {combined_frametime_seconds} seconds"
+        )
+        print(
+            "Please delete this benchmark out of the client and result directory and redo it"
+        )
 
 
 def main():
