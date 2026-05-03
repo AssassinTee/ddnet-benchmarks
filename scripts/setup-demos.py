@@ -1,18 +1,14 @@
 import shutil
 
-from storage_finder import StorageFinder
 from pathlib import Path
 
+CLIENTS_DIR = "clients"
 
-def main():
-    # this one ignores steam directories
-    data_path = StorageFinder.instance().getDataPath()
-    print("Ignore the client error, we don't need the client")
-    print(data_path)
+
+def setup_demos_for_client(client_userdir_path):
     demos = Path("resources/demos")
-    print(demos.absolute())
     for demo in demos.glob("*.demo"):
-        dest_directory = data_path / "demos"
+        dest_directory = client_userdir_path / "demos"
         dest_name = dest_directory / demo.name
         if dest_name.exists():
             print(f"{dest_name} exists :)")
@@ -23,7 +19,7 @@ def main():
         map_name = demo.name.split("-")[0]
 
         benchmark_name = f"benchmark-{map_name}.cfg"
-        benchmark_directory = data_path / benchmark_name
+        benchmark_directory = client_userdir_path / benchmark_name
         if benchmark_directory.exists():
             print(f"{benchmark_directory} exists :)")
         else:
@@ -32,6 +28,12 @@ def main():
                 # f.write("toggle_local_console\n")
                 f.write("demo_play\n")
                 f.write(f"benchmark_quit 30 benchmark-{map_name}.txt\n")
+
+
+def main():
+    clients_path = Path(CLIENTS_DIR)
+    for settings_file in clients_path.glob("ddnet-*/DDNet-*/userdir"):
+        setup_demos_for_client(settings_file)
 
 
 if __name__ == "__main__":

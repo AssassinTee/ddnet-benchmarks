@@ -8,6 +8,10 @@ echo "#### Installing clients ####"
 python3 scripts/install-clients.py client-list.json
 
 echo ""
+echo "#### Configuring clients ####"
+python3 scripts/configure-clients.py vulkan  # ogl1.0.0, ogl3.0.0, ogl3.3.0
+
+echo ""
 echo "#### Setting up demos and configs ####"
 python3 scripts/setup-demos.py
 
