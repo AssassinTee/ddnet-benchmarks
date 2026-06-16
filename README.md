@@ -14,6 +14,7 @@ See [resources](https://github.com/AssassinTee/ddnet-benchmark-resources/blob/ma
 
 ## Create benchmarks
 
+- Download the demos and configs with `git submodule update --init`
 - Select and download the clients you want to benchmark by modifying `client-list.json`
 - run `./create-benchmarks.sh`, which will
   - install all clients from the list
