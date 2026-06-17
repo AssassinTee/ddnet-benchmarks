@@ -19,6 +19,7 @@ def main(client_dir: Optional[str], result_dir: Optional[str]):
 
     else:
         results = Path(result_dir)
+        results.mkdir(exist_ok=True)
         client = Path(client_dir)
         for benchmark in client.rglob("benchmark-*.txt"):
             benchmark_name = benchmark.name
