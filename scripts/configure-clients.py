@@ -40,9 +40,10 @@ def copy_settings(client_dir: Path, backend="vulkan"):
     assert resource_file.exists()
 
 
-def main(backend):
-    clients_path = Path(CLIENTS_DIR)
-    for settings_file in clients_path.glob("ddnet-*/DDNet-*/storage.cfg"):
+def main(backend, client_dir: str):
+    clients_path = Path(client_dir)
+    glob_regex = "ddnet-*/DDNet-*/storage.cfg" if client_dir == CLIENTS_DIR else "build/storage.cfg"
+    for settings_file in clients_path.glob(glob_regex):
         switch_userdir(settings_file)
         create_userdir(settings_file.parent)
         copy_settings(settings_file.parent, backend)
@@ -53,4 +54,8 @@ if __name__ == "__main__":
         backend = sys.argv[1]
     else:
         backend = "vulkan"
-    main(backend)
+    if len(sys.argv) >= 3:
+        client_dir = sys.argv[2]
+    else:
+        client_dir = CLIENTS_DIR
+    main(backend, client_dir)

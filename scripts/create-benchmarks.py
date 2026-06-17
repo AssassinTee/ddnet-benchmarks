@@ -1,6 +1,7 @@
 import os
 import subprocess
 from pathlib import Path
+import sys
 
 DEMOS_DIR = "resources/demos"
 CLIENTS_DIR = "clients"
@@ -49,19 +50,21 @@ def run_benchmark(client: Path, demo_file: Path, windows: bool):
     print("[DONE] Benchmark created")
 
 
-def main():
+def main(client_dir: str):
     demos = [f for f in Path(DEMOS_DIR).glob("*.demo")]
-    clients = [d for d in Path(CLIENTS_DIR).glob("ddnet-*/DDNet-*/DDNet.exe")]
+    clients = [d for d in Path(client_dir).rglob("DDNet.exe")]
     windows = True
     if not clients:  # linux fallback
         windows = False
-        clients = [d for d in Path(CLIENTS_DIR).glob("ddnet-*/DDNet-*/DDNet")]
+        clients = [d for d in Path(client_dir).rglob("DDNet")]
 
     if not demos:
         print("No demos found in resources/demos/")
         return
     if not clients:
-        print("No clients found in clients/")
+        print(f"No clients found in {client_dir}")
+        if client_dir != CLIENTS_DIR:
+            print(f"You need to compile the client for {client_dir} manually")
         return
 
     def sort_key(p) -> str:
@@ -70,7 +73,8 @@ def main():
         assert len(parts) == 3
         return parts[1].split(".")
 
-    clients = sorted(clients, key=lambda p: sort_key(p))
+    if len(clients) > 1:
+        clients = sorted(clients, key=lambda p: sort_key(p))
 
     for client in clients:
         print(f"\n=== Processing Client: {client} ===")
@@ -79,4 +83,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) >= 2:
+        client_dir = sys.argv[1]
+    else:
+        client_dir = CLIENTS_DIR
+    main(client_dir)

@@ -2,6 +2,8 @@
 clients/*
 results/*
 results-*/*
+master/
+PR-*/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
