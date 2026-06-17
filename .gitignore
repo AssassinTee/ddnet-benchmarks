@@ -1,9 +1,11 @@
 # project specific
-clients/*
-results/*
+clients
+clients-*/*
+results
 results-*/*
 master/
 PR-*/
+*.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
