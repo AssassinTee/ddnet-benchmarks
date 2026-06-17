@@ -28,7 +28,10 @@ if [ ! -d "PR-${PR_ID}/.git" ]; then
     cd "PR-${PR_ID}"
     git fetch origin "pull/${PR_ID}/head:pr-${PR_ID}"
     git checkout "pr-${PR_ID}"
-    #  no need to create build directory, because this is already copied
+    #  recreate build directory
+    rm -rf build
+    mkdir build
+    cp ../master/build/storage.cfg build/storage.cfg
     cd ..
 fi
 
@@ -50,3 +53,6 @@ python3 scripts/create-benchmarks.py "PR-${PR_ID}"
 echo ""
 echo "#### Collecting results ####"
 python3 scripts/collect-data.py master "results-${PR_ID}"
+python3 scripts/collect-data.py "PR-${PR_ID}" "results-${PR_ID}"
+echo "ls results-${PR_ID}"
+ls "results-${PR_ID}"
